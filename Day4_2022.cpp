@@ -5,16 +5,19 @@ using namespace std;
 void solution(const string &s, const char &del);
 
 int main() {
+    string str;
     ifstream myfile ("C:/Users/navez/Anaconda Proj/C++ Projects/AoC/Advent_2022_Files/Day4.txt");
     stringstream instream;
     instream << myfile.rdbuf(); 
     string con = instream.str();
     myfile.close();
 
-    con = regex_replace(con, regex("-"), ",");
-    con = regex_replace(con, regex("\n"), ",");
+    for (auto i: con) {
+        if (i == '-' || i == '\n') str += ',';
+        else str += i;
+    }
 
-    solution(con,',');
+    solution(str,',');
 }
 
 void solution(const string &s, const char &del) {
