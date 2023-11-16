@@ -17,6 +17,7 @@ string parsefile(const char &del) {
     instream << myfile.rdbuf(); 
     string con = instream.str();
     myfile.close();
+    
     stringstream ss {con};
     string word;
     while (!ss.eof()) {
@@ -46,7 +47,7 @@ void solution(const string &con, const char &del) {
         if (word[3] == '.') tmp_dir.pop_back();
         if (isdigit(word[0])) {
             dir.emplace_back(tmp_dir);
-            dir.at(dir.size()-1).push_back(word);
+            dir.at(dir.size()-1).emplace_back(word);
         }
     }
 
@@ -66,7 +67,6 @@ void solution(const string &con, const char &del) {
         }
     }
 
-    sum = 0;
     for (auto i: ttl) {
         if (i <= 100000) sum += i;
     }
@@ -80,5 +80,4 @@ void solution(const string &con, const char &del) {
             break;
         }
     }
-
 }
