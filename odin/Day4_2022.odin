@@ -15,8 +15,8 @@ solution :: proc(filepath: string) {
     defer delete(data, context.allocator)  
 
     it := string(data)
-    it, _ = strings.replace(it, "-", ",", -1)
-    it, _ = strings.replace(it, ",", "\n", -1)
+    it, _ = strings.replace_all(it, "-", ",")
+    it, _ = strings.replace_all(it, ",", "\n")
     arr: [dynamic]int
     defer delete(arr)
    
@@ -36,6 +36,5 @@ solution :: proc(filepath: string) {
         }
         cnt += 1
     }
-    fmt.println(ttl)
-    fmt.println(ttl2)
+    fmt.printf("Part 1: {:v}\nPart 2: {:v}", ttl, ttl2)
 }
