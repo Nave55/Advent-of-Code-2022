@@ -9,7 +9,7 @@ main :: proc() {
     fmt.printf("Part 1: {:v}\nPart 2: {:v}\n", a, b)
 }
 
-solution :: proc(i_size: int) -> (answer: int) {
+solution :: proc(i_size: int) -> int {
     data, ok := os.read_entire_file("./AoC Files/Day6_2022.txt", context.allocator)
     defer delete(data, context.allocator)  
 
@@ -20,10 +20,8 @@ solution :: proc(i_size: int) -> (answer: int) {
         set1 : Letters
         for j in i..=i+(i_size-1) do set1 += {rune(it[j])}
         if card(set1) == i_size {
-            answer = i + i_size
-            break
+            return i + i_size
         }        
     }
-
-    return 
+    return -1
 }
