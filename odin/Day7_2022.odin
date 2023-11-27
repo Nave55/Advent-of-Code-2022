@@ -5,7 +5,6 @@ import "core:strings"
 import "core:os"
 import "core:strconv"
 import "core:slice"
-import "core:math/rand"
 
 main :: proc() {
     a, b := solution("./AoC Files/Day7_2022.txt")
