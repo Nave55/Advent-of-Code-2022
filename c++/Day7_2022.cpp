@@ -5,6 +5,9 @@ using namespace std;
 void solution(const string &con, const char &del);
 string parsefile(const char &del);
 
+template <typename T>
+T strConcat(const vector<T> &arr);
+
 int main() {
     string con = parsefile('\n');
     solution(con,'\n');
@@ -31,7 +34,11 @@ string parsefile(const char &del) {
 }
 
 void solution(const string &con, const char &del) {
-    vector<vector<string>> dir;
+    struct Directory {
+        string path;
+        int size {0};
+    };
+    vector<Directory> dir;
     vector<string> tmp_dir;
     set<string> dir_names;
     stringstream ss {con};
@@ -40,44 +47,51 @@ void solution(const string &con, const char &del) {
     while (!ss.eof()) {
         getline(ss, word, del);
         if (word[0] == 'c' && word[3] != '.') {
-            string rnd = to_string(rand() % 20000);
-            tmp_dir.emplace_back(rnd);
-            dir_names.insert(rnd);
+            tmp_dir.emplace_back(word.substr(3));
+            auto str = strConcat(tmp_dir);
+            dir_names.insert(str);         
         }
         if (word[3] == '.') tmp_dir.pop_back();
         if (isdigit(word[0])) {
-            dir.emplace_back(tmp_dir);
-            dir.at(dir.size()-1).emplace_back(word);
+            auto num = stoi(word.substr(0,word.find(' ')));
+            auto str = strConcat(tmp_dir);
+            dir.emplace_back(Directory{str, num});
         }
     }
-
+    
     int sum {0};
     vector<int> ttl;
     for (auto i: dir_names) {
         for (auto j: dir) {
-            if (find(j.begin(),j.end(),i) != j.end()) {
-                sum += stoi(j.at(j.size() - 1));
-            }
-            else {
-                if (sum > 0) {
-                    ttl.emplace_back(sum);
-                    sum = 0;
-                }
-            }
+            if (j.path.find(i) < j.path.size()) {
+                sum += j.size;
+            }   
+        }
+        if (sum > 0) {
+            ttl.emplace_back(sum);
+            sum = 0;
         }
     }
 
+    sort(ttl.begin(), ttl.end());
     for (auto i: ttl) {
         if (i <= 100000) sum += i;
-    }
-    cout << sum << '\n';
-
-    sort(ttl.begin(), ttl.end());
-    
-    for (auto i: ttl) {
         if (i >= (ttl.at(ttl.size() - 1) - 40000000)) {
-            cout << i << '\n';
+            cout << "Part 1: " << sum << '\n' << "Part 2: " << i << endl;
             break;
         }
     }
+}
+
+template <typename T>
+T strConcat(const vector<T> &arr) {
+    string str {""};
+    for (size_t i {0}; i < arr.size(); ++i) {
+        if (i < arr.size() - 1) {
+            str += arr.at(i);
+            str += "-";
+        }
+        else str += arr.at(i);
+    }
+    return str;
 }
