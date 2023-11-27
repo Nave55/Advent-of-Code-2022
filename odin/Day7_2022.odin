@@ -1,4 +1,4 @@
-package AoC
+package main
 
 import "core:fmt"
 import "core:strings"
@@ -18,8 +18,8 @@ solution :: proc(filepath: string) -> (ans1, ans2:int) {
     it := string(data)
     
     Directory :: struct {
-        Path : string,
-        Size : int,
+        path : string,
+        size : int,
     }
     
     tmp, uniq_dir_names : [dynamic]string
@@ -28,16 +28,16 @@ solution :: proc(filepath: string) -> (ans1, ans2:int) {
     for line in strings.split_lines_iterator(&it) {
         if line[0:4] == "$ cd" && line[5] != '.' {
             append(&tmp, line[5:])
-            string_tmp := strings.join(tmp[:], "")
+            string_tmp := strings.join(tmp[:], "-")
             if slice.contains(uniq_dir_names[:], string_tmp) == false {
                 append(&uniq_dir_names, string_tmp)
             }
         }
         if len(line) >= 6 && line[5] == '.' do pop(&tmp)
         if line[0] >= 48 && line[0] <= 57 {
-            string_tmp := strings.join(tmp[:], "")
+            string_tmp := strings.join(tmp[:], "-")
             num := strconv.atoi(line[:strings.index(line, " ")])
-            append(&dir, Directory{Path = string_tmp, Size = num})
+            append(&dir, Directory{path = string_tmp, size = num})
         }
     }
 
@@ -45,7 +45,7 @@ solution :: proc(filepath: string) -> (ans1, ans2:int) {
 
     for i in uniq_dir_names {
         for j in dir {
-            if strings.contains(j.Path, i) do ans1 += j.Size
+            if strings.contains(j.path, i) do ans1 += j.size
         }
         if ans1 > 0 {
             append(&ttl, ans1)
