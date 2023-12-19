@@ -17,10 +17,7 @@ solution :: proc(filepath: string) -> (ans1, ans2:int) {
     defer delete(data, context.allocator)  
     it := string(data)
     
-    Directory :: struct {
-        path : string,
-        size : int,
-    }
+    Directory :: struct {path : string, size : int}
     
     tmp, uniq_dir_names : [dynamic]string
     dir : [dynamic]Directory 
@@ -28,29 +25,23 @@ solution :: proc(filepath: string) -> (ans1, ans2:int) {
     for line in strings.split_lines_iterator(&it) {
         if line[0:4] == "$ cd" && line[5] != '.' {
             append(&tmp, line[5:])
-            string_tmp := strings.join(tmp[:], "-")
-            if slice.contains(uniq_dir_names[:], string_tmp) == false {
-                append(&uniq_dir_names, string_tmp)
-            }
+            append(&uniq_dir_names, strings.join(tmp[:], "-"))   
         }
         if len(line) >= 6 && line[5] == '.' do pop(&tmp)
         if line[0] >= 48 && line[0] <= 57 {
-            string_tmp := strings.join(tmp[:], "-")
-            num := strconv.atoi(line[:strings.index(line, " ")])
-            append(&dir, Directory{path = string_tmp, size = num})
+            p := strings.join(tmp[:], "-")
+            s := strconv.atoi(line[:strings.index(line, " ")])
+            append(&dir, Directory{path = p, size = s})
         }
     }
 
     ttl : [dynamic]int
-
     for i in uniq_dir_names {
+        t_sum := 0
         for j in dir {
-            if strings.contains(j.path, i) do ans1 += j.size
+            if strings.contains(j.path, i) do t_sum += j.size
         }
-        if ans1 > 0 {
-            append(&ttl, ans1)
-            ans1 = 0
-        }
+        append(&ttl, t_sum)       
     }
     
     slice.sort(ttl[:])
