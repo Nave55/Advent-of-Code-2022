@@ -4,7 +4,6 @@
 using namespace std;
 
 int main() {
-    string str;
     ifstream myfile ("C:/Users/navez/Anaconda Proj/C++ Projects/AoC/Advent_2022_Files/Day7.txt");
     stringstream instream;
     instream << myfile.rdbuf(); 
