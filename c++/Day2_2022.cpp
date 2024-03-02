@@ -1,37 +1,27 @@
-#include <bits/stdc++.h>
-
-using namespace std;
-
-void solution(const string &s, const char &del);
+#include "tl/getlines.hpp"
+#include "tl/to.hpp"
+#include "bits/stdc++.h"
 
 int main() {
-    ifstream myfile ("C:/Users/navez/Anaconda Proj/C++ Projects/AoC/Advent_2022_Files/Day2.txt");
-    stringstream instream;
-    instream << myfile.rdbuf(); 
-    string con = instream.str();
-    myfile.close();
-    solution(con,'\n');
-}
+    std::map<std::string, int> mp;
+    std::map<std::string, std::string> mp2;
 
-void solution(const string &s, const char &del) {
-    int sum {0}, sum2 {0};
-    map<string, int> mp;
-    map<string, string> mp2;
+    mp["A X"] = 4; mp["A Y"] = 8; mp["A Z"] = 3;
+    mp["B X"] = 1; mp["B Y"] = 5; mp["B Z"] = 9;
+    mp["C X"] = 7; mp["C Y"] = 2; mp["C Z"] = 6;
 
-    mp["AX"] = 4; mp["AY"] = 8; mp["AZ"] = 3;
-    mp["BX"] = 1; mp["BY"] = 5; mp["BZ"] = 9;
-    mp["CX"] = 7; mp["CY"] = 2; mp["CZ"] = 6;
+    mp2["A X"] = "A Z"; mp2["A Y"] = "A X"; mp2["A Z"] = "A Y";
+    mp2["B X"] = "B X"; mp2["B Y"] = "B Y"; mp2["B Z"] = "B Z";
+    mp2["C X"] = "C Y"; mp2["C Y"] = "C Z"; mp2["C Z"] = "C X";
 
-    mp2["AX"] = "AZ"; mp2["AY"] = "AX"; mp2["AZ"] = "AY";
-    mp2["BX"] = "BX"; mp2["BY"] = "BY"; mp2["BZ"] = "BZ";
-    mp2["CX"] = "CY"; mp2["CY"] = "CZ"; mp2["CZ"] = "CX";
+    int ttl1 {0}, ttl2 {0};
+    std::ifstream file("Advent_2022_Files/Day2.txt");
+    auto lines = tl::views::getlines(file) | tl::to<std::vector>();
 
-    stringstream ss {s};
-    string word;
-    while (!ss.eof()) {
-        getline(ss, word, del);
-        sum += mp.at(word.replace(1,1,""));
-        sum2 += mp.at(mp2.at(word));
+    for (auto i : lines) {
+        ttl1 += mp[i];
+        ttl2 += mp[mp2[i]];
     }
-    cout << sum << "\n" << sum2 << "\n";
+
+    printf("Part 1: %d\nPart 2: %d", ttl1, ttl2);
 }
