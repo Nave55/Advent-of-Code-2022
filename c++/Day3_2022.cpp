@@ -1,45 +1,75 @@
-#include "tl/getlines.hpp"
-#include "tl/to.hpp"
 #include <bits/stdc++.h>
-#include "tools.h"
+
+using namespace std;
+
+void solution1(const string &s, const char &del);
+void solution2(const string &s, const char &del);
 
 int main() {
-    std::ifstream file("C:/Users/navez/Cpp_Projects/AoC/Advent_2022_Files/Day7.txt");
-    auto lines = tl::views::getlines(file) | tl::to<std::vector>();
+    ifstream myfile ("C:/Users/navez/Cpp_Projects/AoC/Advent_2022_Files/Day3.txt");
+    stringstream instream;
+    instream << myfile.rdbuf(); 
+    string con = instream.str();
+    myfile.close();
 
-    struct Directory {std::string path; int size {0};};
-    std::vector<Directory> dir;
-    std::vector<std::string> tmp_dir;
-    std::set<std::string> dir_names;
+    solution1(con,'\n');
+    solution2(con,'\n');
+}
 
-    for (auto word: lines) {
-        if (word[2] == 'c' && word[5] != '.') {
-            tmp_dir.push_back(std::move(word.substr(5)));
-            dir_names.insert(join(tmp_dir, '-'));         
-        }
-        else if (word[5] == '.') tmp_dir.pop_back();
-        else if (isdigit(word[0])) {
-            auto p = join(tmp_dir, '-');
-            auto s  = std::stoi(word.substr(0,word.find(' ')));
-            dir.push_back(Directory{std::move(p), std::move(s)});
-        }
-    }
-        
-    std::vector<int> ttl;
-    for (auto i: dir_names) {
-        int sum {0};
-        for (auto j: dir) {
-            if (j.path.find(i) < j.path.size()) sum += j.size;
-        }
-        ttl.push_back(std::move(sum));
+void solution1(const string &s, const char &del) {
+    int sum {0};
+    map<char, int> mp;
+    for (size_t i {0}; i < 26; i++) {
+        char letter = 97 + i;
+        char letter_u = 65 + i;
+        mp.insert(pair<char,int>(letter,i+1));
+        mp.insert(pair<char,int>(letter_u,i+27));
     }
 
-    auto filter1 = ttl | std::ranges::views::filter([](auto x) {return x <= 100'000;});
-    auto filter2 = ttl | std::ranges::views::filter([ttl](auto x) {return x >= ttl[0] - 40'000'000;})
-                       | tl::to<std::vector>();
+    stringstream ss {s};
+    string word;
+    while (!ss.eof()) {
+        string v_intersection;
+        getline(ss, word, del);
+        string substr1 = word.substr(0,word.length()/2);
+        string substr2 = word.substr(word.length()/2,word.length());
+        sort(substr1.begin(), substr1.end());
+        sort(substr2.begin(), substr2.end());
+        set_intersection(substr1.begin(), substr1.end(), substr2.begin(), substr2.end(), back_inserter(v_intersection));
+        sum += mp[v_intersection.at(0)];
+    }
+    cout << sum << endl;
+}
 
-    auto pt1 = std::accumulate(filter1.begin(), filter1.end(), 0);
-    auto pt2 = minVal(filter2);
+void solution2(const string &s, const char &del) {
+    int sum {0}, cnt {1};
+    vector<string> vec {};
+    map<char, int> mp;
+    for (size_t i {0}; i < 26; i++) {
+        char letter = 97 + i;
+        char letter_u = 65 + i;
+        mp.insert(pair<char,int>(letter,i+1));
+        mp.insert(pair<char,int>(letter_u,i+27));
+    }
 
-    printf("Part 1: %d\nPart 2: %d", pt1, pt2);
+    stringstream ss {s};
+    string word;
+    while (!ss.eof()) {
+        string v_intersection, v_intersection2;
+        getline(ss, word, del);
+        vec.push_back(word);
+        if (cnt % 3 == 0) {
+            string substr1 {vec.at(cnt-3)};
+            string substr2 {vec.at(cnt-2)}; 
+            string substr3 {vec.at(cnt-1)};
+            sort(substr1.begin(), substr1.end());
+            sort(substr2.begin(), substr2.end());
+            sort(substr3.begin(), substr3.end());
+            set_intersection(substr1.begin(), substr1.end(), substr2.begin(), substr2.end(), back_inserter(v_intersection));
+            set_intersection(v_intersection.begin(), v_intersection.end(), substr3.begin(), substr3.end(), back_inserter(v_intersection2));
+            sum += mp[v_intersection2.at(0)];
+        }
+        cnt++;
+    }
+    cout << sum << endl;
 }
