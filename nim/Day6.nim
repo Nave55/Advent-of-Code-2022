@@ -1,13 +1,13 @@
 import sets, strformat
 
-proc solution(seqlen: int): int =
+proc solution(window: int): int =
     let file = open("input/Day6.txt");
     defer: file.close()
 
     for i in file.lines():
-        for j in 0..<len(i) - seqlen - 1:
-            if len(i[j..j + seqlen - 1].toHashSet()) == seqlen:
-                return j + seqlen
+        for j in 0..<len(i) - window - 1:
+            if len(i[j..j + window - 1].toHashSet()) == window:
+                return j + window
         
 let 
     ttl1 = solution(4)
