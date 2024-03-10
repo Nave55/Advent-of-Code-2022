@@ -7,8 +7,8 @@ using Lambda;
 
 class Day4 {
     static function main() {
-        var data = [for (i in sys.io.File.getContent('Advent Files_2022/Day4.txt').replaceAll(
-                                                     "-", ",").split("\n")) trim(i).split(',').map(item -> parseInt(item))];
+        var data: AAI = [for (i in sys.io.File.getContent('Advent Files_2022/Day4.txt').replaceAll(
+                                                     "-", ",").split("\n")) trim(i).split(',').map(item -> int(parseInt(item)))];
         var ttl = solution(data);
         Sys.println('Solution 1: ${ttl[0]}\nSolution 2: ${ttl[1]}');
     }
