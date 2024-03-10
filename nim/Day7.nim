@@ -1,7 +1,7 @@
 import strutils, sugar, sequtils, strformat, math
 
 type
-    Directory = object
+    Directory = ref object
         path: string
         size: int
 
@@ -23,7 +23,7 @@ proc solution =
             let 
                 p = tmp.join("-")
                 s = parseInt(i[0..<i.find(' ')])
-            dir.add(Directory(path:p, size: s))
+            dir.add(Directory(path: p, size: s))
     
     var arr_sum: seq[int]
 
@@ -37,7 +37,7 @@ proc solution =
     let 
         pt1 = arr_sum.filter(item => item <= 100_000).sum()
         pt2 = arr_sum.filter(item => item >= arr_sum[0] - 40_000_000).min()
-        
+
     echo &"Solution 1: {pt1}\nSolution 2: {pt2}"
 
 solution()
