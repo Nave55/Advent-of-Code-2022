@@ -13,14 +13,9 @@ class Day3 {
              alph[(i + 96).toChar()] = i;
              alph[(i + 64).toChar()] = i + 26;
         }
-        var data = parsefile();
+        var data = [for (i in sys.io.File.getContent('Advent Files_2022/Day3.txt').split('\n')) trim(i)];
         var pt1 = solution1(data), pt2 = solution2(data);
         Sys.println('Solution 1: $pt1\nSolution 2: $pt2');
-    }
-
-    static inline function parsefile() {
-        var con: AS = [for (i in sys.io.File.getContent('Advent Files_2022/Day3.txt').split('\n')) trim(i)];
-        return con;
     }
 
     static function solution1(arr: AS) {
