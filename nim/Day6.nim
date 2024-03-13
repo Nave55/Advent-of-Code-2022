@@ -6,9 +6,8 @@ proc solution(window: int): int =
 
     for i in file.lines():
         for j in 0..<len(i) - window - 1:
-            if len(i[j..j + window - 1].toHashSet()) == window:
+            if len(i[j..<j + window].toHashSet()) == window:
                 return j + window
-        
 let 
     ttl1 = solution(4)
     ttl2 = solution(14)
