@@ -7,7 +7,7 @@ fn main() {
 		lines[i] =lines[i].replace("-", ",")
 		arr << lines[i].split(",").map(it.int())
 	}
-	 mut ttl1, mut ttl2 := 0, 0
+	mut ttl1, mut ttl2 := 0, 0
         for i in arr {
             if ((i[0] >= i[2] && i[0] <= i[3]) && (i[1] >= i[2] && i[1] <= i[3])) || 
                 ((i[2] >= i[0] && i[2] <= i[1]) && (i[3] >= i[0] && i[3] <= i[1])) {ttl1++}
