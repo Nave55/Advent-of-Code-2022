@@ -1,16 +1,16 @@
 import os
 
 fn main() {
-	crates, instructions := parse_file()
+	crates, instructions := parse_file()!
 	pt1 := solution1(crates, instructions)
 	pt2 := solution2(crates, instructions)
 	println("Part 1: ${pt1}\nPart 2: ${pt2}")	
 }
 
-fn parse_file() ([][]rune, [][]int) {
+fn parse_file()! ([][]rune, [][]int) {
 	mut crates := [][]rune{len: 9}
 	mut instructions := [][]int{}
-	lines := os.read_lines("input/Day5_2022.txt") or {exit(1)}
+	lines := os.read_lines("input/Day5_2022.txt")!
 	for i in 0..lines.len {
 		if i < 8 {
 			crate := lines[i].replace("[", "").replace("]", "").replace("    ", "0").replace(" ", "")	
