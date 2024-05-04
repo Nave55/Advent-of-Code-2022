@@ -20,7 +20,6 @@ fn parse_file() ([][]rune, [][]int) {
 				}
 			}				 			   
 		}
-
 		if i > 9 {
 			instructions << lines[i].replace("move ", "").replace(" from ",",").replace(" to ", ",").split(",").map(it.int())
 		}
