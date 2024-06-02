@@ -1,7 +1,14 @@
 #include "tl/getlines.hpp"
 #include "tl/to.hpp"
-#include <bits/stdc++.h>
 #include "tools.h"
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+#include <ranges>
+#include <string>
+#include <vector>
+#include <set>
+
 
 int main() {
     std::ifstream file("C:/Users/navez/Cpp_Projects/AoC/Advent_2022_Files/Day7.txt");
@@ -21,7 +28,7 @@ int main() {
         else if (isdigit(word[0])) {
             auto p = join(tmp_dir, '-');
             auto s  = std::stoi(word.substr(0,word.find(' ')));
-            dir.push_back(Directory{std::move(p), std::move(s)});
+            dir.emplace_back(Directory{p, s});
         }
     }
         
@@ -31,15 +38,14 @@ int main() {
         for (auto j: dir) {
             if (j.path.find(i) < j.path.size()) sum += j.size;
         }
-        ttl.push_back(std::move(sum));
+        ttl.push_back(sum);
     }
 
     auto filter1 = ttl | std::ranges::views::filter([](auto x) {return x <= 100'000;});
-    auto filter2 = ttl | std::ranges::views::filter([ttl](auto x) {return x >= ttl[0] - 40'000'000;})
-                       | tl::to<std::vector>();
+    auto filter2 = ttl | std::ranges::views::filter([ttl](auto x) {return x >= ttl[0] - 40'000'000;});
 
     auto pt1 = std::accumulate(filter1.begin(), filter1.end(), 0);
-    auto pt2 = minVal(filter2);
+    auto pt2 = *std::ranges::min_element(filter2);
 
-    printf("Part 1: %d\nPart 2: %d", pt1, pt2);
+    std::cout <<"Part 1: " << pt1 << "\nPart 2: " << pt2 << std::endl;
 }
