@@ -11,7 +11,7 @@ fn solution(s []string)! {
 	mut scores := []int{}
 
 	for rows in 1..s.len - 1 {
-	    for cols in 1..s.len - 1 {
+		for cols in 1..s.len - 1 {
 			pos := rune(s[rows][cols]).str().i8()
 
 			mut left := []i8{}
