@@ -5,7 +5,7 @@
 #include "tl/getlines.hpp"
 #include "tl/to.hpp"
 
-auto solution(const std::string &con, size_t window) -> int;
+auto solution(const std::string &lines, size_t window) -> int;
 
 int main() {
     std::ifstream file ("C:/Users/navez/Cpp_Projects/AoC/Advent_2022_Files/Day6.txt");
