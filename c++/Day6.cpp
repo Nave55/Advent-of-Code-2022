@@ -1,39 +1,24 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <string>
+#include <set>
+#include <fstream>
+#include "tl/getlines.hpp"
+#include "tl/to.hpp"
 
-using namespace std;
-
-string parsefile();
-int solution(string con, const size_t &window);
+int solution(const std::string &con, size_t window);
 
 int main() {
-    string con = parsefile();
-    cout << solution(con, 4) << '\n';
-    cout << solution(con, 14) << '\n'; 
+    std::ifstream file ("C:/Users/navez/Cpp_Projects/AoC/Advent_2022_Files/Day6.txt");
+    auto lines = tl::views::getlines(file) | tl::to<std::vector<std::string>>();
+    std::cout << solution(lines[0], 4) << std::endl;
+    std::cout << solution(lines[0], 14) << std::endl; 
 }
 
-string parsefile() {
-    ifstream myfile ("C:/Users/navez/Anaconda Proj/C++ Projects/AoC/Advent_2022_Files/Day6.txt");
-    stringstream instream;
-    instream << myfile.rdbuf(); 
-    string con = instream.str();
-    myfile.close();
-    return con;
-}
-
-int solution(string con, const size_t &window) {
-    set<char> s {};
-    size_t cnt {window}, i {0};
-    
-    while (con.size() >= window) {
-        s.insert(con[i]);
-        if (i == window - 1) {
-            if (s.size() == window) return cnt;
-            s.clear();
-            con.erase(0,1);
-            i = -1;
-            ++cnt;
-        }
-        ++i;
+int solution(const std::string &lines, size_t window) {
+    for (size_t i {0}; i < lines.size() - window + 1; i++) {
+        std::set<char> s {};
+        for (size_t j {i}; j < i + window; j++) s.insert(lines[j]);
+        if (s.size() == window) return i + window;
     }
-    return 0;
+    return 0;   
 }
