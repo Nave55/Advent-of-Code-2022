@@ -1,75 +1,59 @@
-#include <bits/stdc++.h>
+#include "tl/getlines.hpp"
+#include "tl/to.hpp"
+#include "tools.h"
+#include "fstream"
+#include "algorithm"
+#include "iostream"
+#include "ranges"
+#include "numeric"
+#include "vector"
+#include "string"
+#include "map"
+// #include <bits/stdc++.h>
 
-using namespace std;
-
-void solution1(const string &s, const char &del);
-void solution2(const string &s, const char &del);
+auto solution1(const std::vector<std::string> &s, const std::map<char, int> &mp) -> int;
+auto solution2(const std::vector<std::string> &s, const std::map<char, int> &mp) -> int;
 
 int main() {
-    ifstream myfile ("C:/Users/navez/Cpp_Projects/AoC/Advent_2022_Files/Day3.txt");
-    stringstream instream;
-    instream << myfile.rdbuf(); 
-    string con = instream.str();
-    myfile.close();
-
-    solution1(con,'\n');
-    solution2(con,'\n');
-}
-
-void solution1(const string &s, const char &del) {
-    int sum {0};
-    map<char, int> mp;
+    std::map<char, int> mp;
     for (size_t i {0}; i < 26; i++) {
         char letter = 97 + i;
         char letter_u = 65 + i;
-        mp.insert(pair<char,int>(letter,i+1));
-        mp.insert(pair<char,int>(letter_u,i+27));
+        mp.insert(std::pair<char,int>(letter,i+1));
+        mp.insert(std::pair<char,int>(letter_u,i+27));
     }
 
-    stringstream ss {s};
-    string word;
-    while (!ss.eof()) {
-        string v_intersection;
-        getline(ss, word, del);
-        string substr1 = word.substr(0,word.length()/2);
-        string substr2 = word.substr(word.length()/2,word.length());
-        sort(substr1.begin(), substr1.end());
-        sort(substr2.begin(), substr2.end());
-        set_intersection(substr1.begin(), substr1.end(), substr2.begin(), substr2.end(), back_inserter(v_intersection));
-        sum += mp[v_intersection.at(0)];
-    }
-    cout << sum << endl;
+    std::ifstream file ("C:/Users/navez/Cpp_Projects/AoC/Advent_2022_Files/Day3.txt");
+    auto lines = tl::views::getlines(file) | tl::to<std::vector>();
+
+    std::printf("Part 1: %d\nPart 2: %d\n", solution1(lines, mp), solution2(lines, mp));
 }
 
-void solution2(const string &s, const char &del) {
-    int sum {0}, cnt {1};
-    vector<string> vec {};
-    map<char, int> mp;
-    for (size_t i {0}; i < 26; i++) {
-        char letter = 97 + i;
-        char letter_u = 65 + i;
-        mp.insert(pair<char,int>(letter,i+1));
-        mp.insert(pair<char,int>(letter_u,i+27));
+auto solution1(const std::vector<std::string> &s, const std::map<char, int> &mp) -> int {
+    int ttl {0};
+    for (auto i: s) {
+        std::string inter {""};
+        auto str1 = i.substr(0, i.size() / 2);
+        auto str2 = i.substr(i.size() / 2);
+        std::sort(str1.begin(), str1.end());
+        std::sort(str2.begin(), str2.end());
+        std::set_intersection(str1.begin(), str1.end(), str2.begin(), str2.end(), std::back_inserter(inter));
+        ttl += mp.at(inter.at(0));
     }
+    return ttl;
+}
 
-    stringstream ss {s};
-    string word;
-    while (!ss.eof()) {
-        string v_intersection, v_intersection2;
-        getline(ss, word, del);
-        vec.push_back(word);
-        if (cnt % 3 == 0) {
-            string substr1 {vec.at(cnt-3)};
-            string substr2 {vec.at(cnt-2)}; 
-            string substr3 {vec.at(cnt-1)};
-            sort(substr1.begin(), substr1.end());
-            sort(substr2.begin(), substr2.end());
-            sort(substr3.begin(), substr3.end());
-            set_intersection(substr1.begin(), substr1.end(), substr2.begin(), substr2.end(), back_inserter(v_intersection));
-            set_intersection(v_intersection.begin(), v_intersection.end(), substr3.begin(), substr3.end(), back_inserter(v_intersection2));
-            sum += mp[v_intersection2.at(0)];
-        }
-        cnt++;
+auto solution2(const std::vector<std::string> &s, const std::map<char, int> &mp) -> int {
+    int ttl {0};
+    for (size_t i {0}; i < s.size(); i += 3) {
+        std::string inter, inter2;
+        auto str1 = s.at(i), str2 = s.at(i + 1), str3 = s.at(i + 2);
+        std::sort(str1.begin(), str1.end());
+        std::sort(str2.begin(), str2.end());
+        std::sort(str3.begin(), str3.end());
+        std::set_intersection(str1.begin(), str1.end(), str2.begin(), str2.end(), std::back_inserter(inter));
+        std::set_intersection(inter.begin(), inter.end(), str3.begin(), str3.end(), std::back_inserter(inter2));
+        ttl += mp.at(inter2.at(0));
     }
-    cout << sum << endl;
+    return ttl;
 }
