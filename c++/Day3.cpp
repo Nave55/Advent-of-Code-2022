@@ -43,7 +43,7 @@ auto solution1(const std::vector<std::string> &s, const std::map<char, int> &mp)
 
 auto solution2(const std::vector<std::string> &s, const std::map<char, int> &mp) -> int {
     int ttl {0};
-    for (size_t i {0}; i < s.size(); i += 3) {
+    for (size_t i {0}; i < s.size() - 2; i += 3) {
         std::string inter, inter2;
         auto str1 = s.at(i), str2 = s.at(i + 1), str3 = s.at(i + 2);
         std::sort(str1.begin(), str1.end());
