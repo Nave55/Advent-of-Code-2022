@@ -2,8 +2,6 @@
 #include <string>
 #include <set>
 #include <fstream>
-#include "tl/getlines.hpp"
-#include "tl/to.hpp"
 
 auto solution(const std::string &con, size_t window) -> int;
 
