@@ -15,7 +15,7 @@ class Day5 {
     static function parsefile() {
         var con: AS = [for (i in sys.io.File.getContent('Advent Files_2022/Day5.txt').split('\n')) i.replaceAll(
             "[", "").replaceAll("]", "").replaceAll("    ", "0").replaceAll(" ", "").trim()];
-        var crates: AAS = [[], [], [], [], [], [], [], [], []];
+        var crates: AAS = [for (i in 0...9) []];
         var instructions: AAI = [];
         for (i in con.slice(0, 8)) {
             for (j in 0...i.length) {
