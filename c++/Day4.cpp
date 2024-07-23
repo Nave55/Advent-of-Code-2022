@@ -1,45 +1,26 @@
-#include <bits/stdc++.h>
-
-using namespace std;
-
-void solution(const string &s, const char &del);
+#include "tl/getlines.hpp"
+#include "tl/to.hpp"
+#include "tools.h"
+#include "iostream"
+#include "fstream"
+#include "vector"
 
 int main() {
-    string str;
-    ifstream myfile ("C:/Users/navez/Anaconda Proj/C++ Projects/AoC/Advent_2022_Files/Day4.txt");
-    stringstream instream;
-    instream << myfile.rdbuf(); 
-    string con = instream.str();
-    myfile.close();
+    std::ifstream file ("C:/Users/navez/Cpp_Projects/AoC/Advent_2022_Files/Day4.txt");
+    auto lines = tl::views::getlines(file) | tl::to<std::vector>();
+    for (size_t i {0}; i < lines.size(); i++) std::replace(lines[i].begin(), lines[i].end(), '-', ',');
+   auto s = split(lines, ',');
 
-    for (auto i: con) {
-        if (i == '-' || i == '\n') str += ',';
-        else str += i;
-    }
+   int sum {0}, sum2 {0};
+   for (size_t i {0}; i < s.size() - 3; i += 4) {
+        if ((s.at(i + 0) >= s.at(i + 2) && s.at(i + 1) <= s.at(i + 3)) || 
+            (s.at(i + 2) >= s.at(i + 0) && s.at(i + 3) <= s.at(i + 1))) sum++;
 
-    solution(str,',');
-}
+        if ((s.at(i + 0) >= s.at(i + 2) && s.at(i + 0) <= s.at(i + 3)) || 
+            (s.at(i + 1) >= s.at(i + 2) && s.at(i + 1) <= s.at(i + 3)) || 
+            (s.at(i + 2) >= s.at(i + 0) && s.at(i + 2) <= s.at(i + 1)) || 
+            (s.at(i + 3) >= s.at(i + 1) && s.at(i + 3) <= s.at(i + 0))) sum2++;       
+   }
 
-void solution(const string &s, const char &del) {
-    int sum {0}, sum2 {0};
-    vector<int> vec {};
-    
-    stringstream ss {s};
-    string word;
-    while (!ss.eof()) {
-        getline(ss, word, del);
-        vec.push_back(stoi(word));
-        if (vec.size() == 4) {
-            if ((vec.at(0) >= vec.at(2) && vec.at(1) <= vec.at(3)) || 
-            (vec.at(2) >= vec.at(0) && vec.at(3) <= vec.at(1))) sum++;
-
-            if ((vec.at(0) >= vec.at(2) && vec.at(0) <= vec.at(3)) || 
-            (vec.at(1) >= vec.at(2) && vec.at(1) <= vec.at(3)) || 
-            (vec.at(2) >= vec.at(0) && vec.at(2) <= vec.at(1)) || 
-            (vec.at(3) >= vec.at(1) && vec.at(3) <= vec.at(0))) sum2++;
-
-            vec.clear();
-        }
-    }
-    cout << sum << "\n" << sum2 << "\n";
+   printf("Part 1: %d\nPart 2: %d", sum, sum2);
 }
