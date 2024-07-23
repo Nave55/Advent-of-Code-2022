@@ -10,8 +10,7 @@ int solution(const std::string &con, size_t window);
 int main() {
     std::ifstream file ("C:/Users/navez/Cpp_Projects/AoC/Advent_2022_Files/Day6.txt");
     auto lines = tl::views::getlines(file) | tl::to<std::vector<std::string>>();
-    std::cout << solution(lines[0], 4) << std::endl;
-    std::cout << solution(lines[0], 14) << std::endl; 
+    std::printf("Part 1: %d\nPart 2: %d\n", solution(lines[0], 4), solution(lines[0], 14));
 }
 
 int solution(const std::string &lines, size_t window) {
