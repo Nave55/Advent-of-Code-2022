@@ -1,3 +1,4 @@
+#pragma once
 #ifndef _tools_h_
 #define _tools_h_
 
@@ -7,9 +8,13 @@
 #include <algorithm>
 #include <iostream>
 #include <ostream>
+#include <sstream>
+#include <memory>
 
 typedef std::vector<int> vi;
 typedef std::vector<std::vector<int>> vvi;
+typedef std::vector<float> vf;
+typedef std::vector<std::vector<float>> vvf;
 typedef std::vector<std::string> vs;
 typedef std::vector<std::vector<std::string>> vvs;
 typedef std::vector<char> vc;
@@ -60,6 +65,30 @@ T maxVal(const std::vector<T> &arr) {
     if (arr.size() != 0) 
         return *std::ranges::max_element(arr);
     return 0;
+}
+
+std::string split(const std::string &s, const char &del = ',') {
+    std::stringstream ss(s);
+    std::string word;
+    while (!ss.eof()) {
+        std::getline(ss, word, del);
+        std::cout << word << std::endl;
+    }
+    return word;
+}
+
+vi split(const std::vector<std::string> &arr, const char &del = ',') {
+    vi result {};
+
+    for (auto i: arr) {
+        std::stringstream ss(i);
+        std::string word;
+        while (!ss.eof()) {
+            std::getline(ss, word, del);
+            result.emplace_back(std::stoi(word));
+        }
+    }
+    return result;
 }
 
 #endif
