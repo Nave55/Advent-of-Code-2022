@@ -1,15 +1,13 @@
 #include "tl/getlines.hpp"
 #include "tl/to.hpp"
 #include "tools.h"
+#include "iostream"
 #include "fstream"
 #include "algorithm"
-#include "iostream"
 #include "ranges"
-#include "numeric"
 #include "vector"
 #include "string"
 #include "map"
-// #include <bits/stdc++.h>
 
 auto solution1(const std::vector<std::string> &s, const std::map<char, int> &mp) -> int;
 auto solution2(const std::vector<std::string> &s, const std::map<char, int> &mp) -> int;
