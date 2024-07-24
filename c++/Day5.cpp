@@ -1,111 +1,70 @@
-#include <bits/stdc++.h>
+#include "tools.h"
+#include <tl/getlines.hpp>
+#include <tl/to.hpp>
+#include <boost/algorithm/string.hpp>
+#include <print>
+#include <iostream>
+#include <fstream>
 
-using namespace std;
-
-typedef vector<vector<char>> vvc;
-
-void solution1(const string &instructions, vvc crates, const char &del);
-void solution2(const string &instructions, vvc crates, const char &del);
-void parsefile(vvc &crates, string &instructions);
+auto solution1(const vvi &instructions, vvc crates) -> std::string;
+auto solution2(const vvi &instructions, vvc crates) -> std::string;
+void parsefile(vvc &crates, vvi &instructions);
 
 int main() {
-    string instructions;
-    vvc crates {{}, {}, {}, {}, {}, {}, {}, {}, {}};
-
+    vvi instructions;
+    vvc crates {{}, {}, {}, {}, {}, {}, {}, {}, {}};  
     parsefile(crates, instructions);
-    solution1(instructions,crates,',');
-    solution2(instructions,crates,',');
+    std::print("Part 1: {}\nPart 2: {}\n", solution1(instructions, crates), solution2(instructions, crates));
+}
+
+void parsefile(vvc &crates, vvi &instructions) {
+    std::ifstream file ("C:/Users/navez/Cpp_Projects/AoC/Advent_2022_Files/Day5.txt");
+    auto lines = tl::views::getlines(file) | tl::to<std::vector<std::string>>();
+
+    for (size_t i {0}; i < lines.size(); ++i) {
+        // std::cout << i << std::endl;
+        if (i < 8) {
+            boost::replace_all(lines[i], "[", "");
+            boost::replace_all(lines[i], "]", "");
+            boost::replace_all(lines[i], "    ", "0");
+            boost::replace_all(lines[i], " ", "");
+            for (size_t j {0}; j < lines[i].size(); ++j) {
+                if (lines[i][j] != '0') crates[j].insert(crates.at(j).begin(), lines[i][j]);
+            }
+        }
+        if (i > 9) {
+            boost::replace_all(lines[i], "move ", "");
+            boost::replace_all(lines[i], " from ", ",");
+            boost::replace_all(lines[i], " to ", ",");
+            instructions.emplace_back(split(lines[i], ','));
+        }
+    }
+}
+
+auto solution1(const vvi &instructions, vvc crates) -> std::string {
+    for (const auto &i : instructions) {
+        for (int j {0}; j < i.at(0); j++) { 
+            crates.at(i[2] - 1).emplace_back(crates.at(i[1] - 1).back());
+            crates.at(i[1] - 1).pop_back();
+        }
+    }
+    std::string result;
+    for (const auto &i : crates) result += (i.back());
     
+    return result;
 }
 
-void parsefile(vvc &crates, string &instructions) {
-    char tmp {' '};
-    int cnt {0};
-    string ign {"movefrt"}, tmpinstr, str_c;
-    ifstream myfile ("C:/Users/navez/Anaconda Proj/C++ Projects/AoC/Advent_2022_Files/Day5.txt");
-    stringstream instream;
-    instream << myfile.rdbuf(); 
-    string con = instream.str();
-    myfile.close();
-
-    for (auto i: con) {
-        if (i == '1') break;
-        if (i == tmp) cnt++;
-        if (i != tmp) cnt = 0;
-        if (i != '[' && i != ']' && i != ' ') str_c += i;
-        if (cnt == 4) {
-            str_c += '0';
-            cnt = 0;
+auto solution2(const vvi &instructions, vvc crates) -> std::string {
+    for (const auto &i : instructions) {
+        vc tmp {}; 
+        for (int j {0}; j < i[0]; j++) {
+            tmp.emplace_back(crates[i[1] - 1].back());
+            crates[i[1] - 1].pop_back();
         }
+        std::reverse(tmp.begin(), tmp.end());
+        crates[i[2] - 1].insert(crates[i[2] - 1].end(), tmp.begin(), tmp.end());
     }
-
-    cnt = 0;
-    for (auto i: str_c) {
-        if (cnt == 9) cnt = 0;
-        if (i == '0') cnt ++;
-        if (i != '\n' && i != '0') {
-            crates.at(cnt).insert(crates.at(cnt).begin(),i);
-            cnt++;
-        }
-    }
-
-    tmpinstr = con.substr(con.find('m'), con.size());
-    for (auto i: tmpinstr) {
-    if (ign.find(i) > 6 && i != ' ' && i != '\n')  instructions += i;
-    if (i == '\n') instructions+= ',';
-    if (i == 'f' || i == 't') instructions += ',';
-    }
-}
-
-void solution1(const string &instructions, vvc crates, const char &del) {
-    int cnt {0}, one {0}, two {0}, three {0};
-    stringstream ss {instructions};
-    string word;
-    while (!ss.eof()) {
-        getline(ss, word, del);
-        cnt += 1;
-        if (cnt == 1) one = stoi(word);
-        if (cnt == 2) two = stoi(word);
-        if (cnt == 3) {
-            cnt = 0;
-            three = stoi(word);
-            for (int i {0}; i < one; i++) {
-                char popped = crates.at(two-1).back();
-                crates.at(two-1).pop_back();
-                crates.at(three-1).push_back(popped);
-            }
-        }
-    }
-    for (int i {0}; i < 9; i++) {
-        cout << crates.at(i).back();
-    }
-    cout << '\n';
-}
-
-void solution2(const string &instructions, vvc crates, const char &del) {
-    int cnt {0}, one {0}, two {0}, three {0};
-    stringstream ss {instructions};
-    string word;
-    while (!ss.eof()) {
-        getline(ss, word, del);
-        cnt += 1;
-        if (cnt == 1) one = stoi(word);
-        if (cnt == 2) two = stoi(word);
-        if (cnt == 3) {
-            string popped_c; 
-            cnt = 0;
-            three = stoi(word);
-            for (int i {0}; i < one; i++) {
-                popped_c.insert(0,string(1,crates.at(two-1).back()));
-                crates.at(two-1).pop_back();
-            }
-            for (int i {0}; i < one; i++) {
-                crates.at(three-1).push_back(popped_c.at(i));
-            }
-        }
-    }
-    for (int i {0}; i < 9; i++) {
-        cout << crates.at(i).back();
-    }
-    cout << '\n';
+    std::string result;
+    for (const auto &i : crates) result += i.back();
+    return result;
 }
