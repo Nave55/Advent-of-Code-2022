@@ -11,7 +11,7 @@ main :: proc() {
     defer delete(data, context.allocator)  
 
     it := string(data)
-    s : [dynamic]string; defer delete(s)
+    s: [dynamic]string; defer delete(s)
     for line in strings.split_lines_iterator(&it) do append(&s, line)
 
     solution(&s)
