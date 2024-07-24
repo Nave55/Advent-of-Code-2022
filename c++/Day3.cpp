@@ -7,13 +7,13 @@
 #include "ranges"
 #include "vector"
 #include "string"
-#include "map"
+#include "unordered_map"
 
-auto solution1(const std::vector<std::string> &s, const std::map<char, int> &mp) -> int;
-auto solution2(const std::vector<std::string> &s, const std::map<char, int> &mp) -> int;
+auto solution1(const std::vector<std::string> &s, const std::unordered_map<char, int> &mp) -> int;
+auto solution2(const std::vector<std::string> &s, const std::unordered_map<char, int> &mp) -> int;
 
 int main() {
-    std::map<char, int> mp;
+    std::unordered_map<char, int> mp;
     for (size_t i {0}; i < 26; i++) {
         char letter = 97 + i;
         char letter_u = 65 + i;
@@ -27,7 +27,7 @@ int main() {
     std::printf("Part 1: %d\nPart 2: %d\n", solution1(lines, mp), solution2(lines, mp));
 }
 
-auto solution1(const std::vector<std::string> &s, const std::map<char, int> &mp) -> int {
+auto solution1(const std::vector<std::string> &s, const std::unordered_map<char, int> &mp) -> int {
     int ttl {0};
     for (auto i: s) {
         std::string inter {""};
@@ -41,7 +41,7 @@ auto solution1(const std::vector<std::string> &s, const std::map<char, int> &mp)
     return ttl;
 }
 
-auto solution2(const std::vector<std::string> &s, const std::map<char, int> &mp) -> int {
+auto solution2(const std::vector<std::string> &s, const std::unordered_map<char, int> &mp) -> int {
     int ttl {0};
     for (size_t i {0}; i < s.size() - 2; i += 3) {
         std::string inter, inter2;
