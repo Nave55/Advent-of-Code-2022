@@ -2,4 +2,4 @@
 
 c++23
 
-tl, v3 and boost libraries.
+tl, v3, blackbird and boost libraries.
