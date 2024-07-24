@@ -7,7 +7,7 @@ fn main() {
 }
 
 fn solution(s []string)! {
-	mut count := (s.len * 2 + s[0].len * 2) - 4
+	mut count := (s.len * 4) - 4
 	mut scores := []int{}
 
 	for rows in 1..s.len - 1 {
