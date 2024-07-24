@@ -9,7 +9,7 @@ int main() {
     std::ifstream file ("C:/Users/navez/Cpp_Projects/AoC/Advent_2022_Files/Day8.txt");
     auto s = tl::views::getlines(file) | tl::to<std::vector<std::string>>();
 
-    int count = (s.size() * 2 + s[0].size() * 2) - 4;
+    int count = (s.size() * 4) - 4;
     vi scores;
 
     for (size_t rows = 1; rows < s.size() - 1; rows++) {
