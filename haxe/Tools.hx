@@ -6,25 +6,25 @@ import Math.*;
 using Lambda;
 using hx.strings.Strings;
 
-typedef AS = Array<String>;
-typedef AI = Array<Int>;
-typedef AF = Array<Float>;
-typedef ANI = Array<Null<Int>>;
-typedef ANF = Array<Null<Float>>;
-typedef AAS = Array<Array<String>>;
-typedef AAI = Array<Array<Int>>;
-typedef AAF = Array<Array<Float>>;
+typedef AS =   Array<String>;
+typedef AI =   Array<Int>;
+typedef AF =   Array<Float>;
+typedef ANI =  Array<Null<Int>>;
+typedef ANF =  Array<Null<Float>>;
+typedef AAS =  Array<Array<String>>;
+typedef AAI =  Array<Array<Int>>;
+typedef AAF =  Array<Array<Float>>;
 typedef AANI = Array<Array<Null<Int>>>;
 typedef AANF = Array<Array<Null<Float>>>;
 typedef AAAS = Array<Array<Array<String>>>;
 typedef AAAI = Array<Array<Array<Int>>>;
 typedef AAAF = Array<Array<Array<Float>>>;
-typedef MII = Map<Int,Int>;
-typedef MSI = Map<String,Int>;
-typedef MIS = Map<Int,String>;
-typedef MSS = Map<String,String>;
-typedef MI64 = Map<Int, Int64>;
-typedef MS64 = Map<String,Int64>;
+typedef MII =  Map<Int,    Int>;
+typedef MSI =  Map<String, Int>;
+typedef MIS =  Map<Int,    String>;
+typedef MSS =  Map<String, String>;
+typedef MI64 = Map<Int,    Int64>;
+typedef MS64 = Map<String, Int64>;
 
 /**
  * [Swaps two variables]
