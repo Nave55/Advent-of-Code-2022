@@ -10,34 +10,33 @@ proc readInput(): seq[string] =
     
     return s
         
-let s = readInput()
-
 block:
+    let s = readInput()
     var
         count = (len(s) * 4) - 4
         scores: seq[int]
 
     for rows in 1..<len(s) - 1:
         for cols in 1..<len(s) - 1:
-            var pos = int(s[rows][cols])
+            var pos = s[rows][cols]
 
             var
-                left: seq[int]
-                right: seq[int]
-                top: seq[int]
-                bottom: seq[int] 
+                left: seq[char]
+                right: seq[char]
+                top: seq[char]
+                bottom: seq[char] 
 
             for i in 1..<cols + 1: 
-                left.add(int(s[rows][cols - i]))
+                left.add((s[rows][cols - i]))
 
             for i in 1..<len(s) - cols: 
-                right.add(int(s[rows][cols + i]))
+                right.add((s[rows][cols + i]))
 
             for i in 1..<rows + 1: 
-                top.add(int(s[rows - i][cols]))
-                
+                top.add((s[rows - i][cols]))
+
             for i in 1..<len(s) - rows: 
-                bottom.add(int(s[rows + i][cols]))
+                bottom.add((s[rows + i][cols]))
 
             if max(left) < pos or max(right) < pos or max(top) < pos or max(bottom) < pos:
                 count += 1
