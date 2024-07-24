@@ -1,7 +1,8 @@
 #include <iostream>
 #include <string>
-#include <set>
+#include <unordered_set>
 #include <fstream>
+#include <ranges>
 
 auto solution(const std::string &con, size_t window) -> int;
 
@@ -13,10 +14,10 @@ int main() {
 }
 
 auto solution(const std::string &line, size_t window) -> int {
-    for (size_t i {0}; i < line.size() - window + 1; i++) {
-        std::set<char> s {};
-        for (size_t j {i}; j < i + window; j++) s.insert(line[j]);
-        if (s.size() == window) return i + window;
+    auto a = line | std::views::slide(window);
+    for (size_t i {0}; i < a.size(); i++) { 
+        std::unordered_set<int> tmp(a[i].begin(), a[i].end());
+        if (tmp.size() == window) return i + window;
     }
     return 0;   
 }
