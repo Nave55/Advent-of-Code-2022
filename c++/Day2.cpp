@@ -1,10 +1,16 @@
 #include "tl/getlines.hpp"
 #include "tl/to.hpp"
-#include "bits/stdc++.h"
+#include <string>
+#include <fstream>
+#include <vector>
+#include <map>
+#include <unordered_map>
+#include <ranges>
+#include <iostream>
 
 int main() {
-    std::map<std::string, int> mp;
-    std::map<std::string, std::string> mp2;
+    std::unordered_map<std::string, int> mp;
+    std::unordered_map<std::string, std::string> mp2;
 
     mp["A X"] = 4; mp["A Y"] = 8; mp["A Z"] = 3;
     mp["B X"] = 1; mp["B Y"] = 5; mp["B Z"] = 9;
@@ -15,13 +21,13 @@ int main() {
     mp2["C X"] = "C Y"; mp2["C Y"] = "C Z"; mp2["C Z"] = "C X";
 
     int ttl1 {0}, ttl2 {0};
-    std::ifstream file("Advent_2022_Files/Day2.txt");
+    std::ifstream file("C:/Users/navez/Cpp_Projects/AoC/Advent_2022_Files/Day2.txt");
     auto lines = tl::views::getlines(file) | tl::to<std::vector>();
-
+    
     for (auto i : lines) {
         ttl1 += mp[i];
         ttl2 += mp[mp2[i]];
     }
 
-    printf("Part 1: %d\nPart 2: %d", ttl1, ttl2);
+    printf("Part 1: %d\nPart 2: %d\n", ttl1, ttl2);
 }
