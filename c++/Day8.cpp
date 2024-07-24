@@ -41,5 +41,5 @@ int main() {
         }
     }
     
-    std::print("Part 1: {}\nPart 2: {}\n", count, *std::max_element(scores.begin(), scores.end()));
+    std::print("Part 1: {}\nPart 2: {}\n", count, maxVal(scores));
 }
