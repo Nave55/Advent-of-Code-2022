@@ -1,20 +1,24 @@
 import haxe.macro.Expr;
 import haxe.Int64;
 import Std.*;
+import Math.*;
+
 using Lambda;
 using hx.strings.Strings;
 
 typedef AS = Array<String>;
 typedef AI = Array<Int>;
 typedef AF = Array<Float>;
+typedef ANI = Array<Null<Int>>;
+typedef ANF = Array<Null<Float>>;
 typedef AAS = Array<Array<String>>;
 typedef AAI = Array<Array<Int>>;
 typedef AAF = Array<Array<Float>>;
+typedef AANI = Array<Array<Null<Int>>>;
+typedef AANF = Array<Array<Null<Float>>>;
 typedef AAAS = Array<Array<Array<String>>>;
 typedef AAAI = Array<Array<Array<Int>>>;
 typedef AAAF = Array<Array<Array<Float>>>;
-typedef ANI = Array<Null<Int>>;
-typedef ANF = Array<Null<Float>>;
 typedef MII = Map<Int,Int>;
 typedef MSI = Map<String,Int>;
 typedef MIS = Map<Int,String>;
@@ -117,9 +121,26 @@ inline function floatProd(arr: Array<Float>): Float {
 @return A Float value
 */
 
-inline function minVal(arr: Array<Any>): Any {
+inline function minVal(arr: Array<Any>): Float {
     var tmp: Float = arr[0];
     for (i in 1...arr.length) tmp = Math.min(tmp, arr[i]);
+    return tmp;
+}
+
+/**
+ * [Max value of an array]
+ 
+    Example:
+        
+        maxVal([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]) -> 10.0
+
+@param arr An array that you want to find the max value for.
+@return A Float value
+*/
+
+inline function maxVal(arr: Array<Any>): Float {
+    var tmp: Float = arr[0];
+    for (i in 1...arr.length) tmp = Math.max(tmp, arr[i]);
     return tmp;
 }
 
