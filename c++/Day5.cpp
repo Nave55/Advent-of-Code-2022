@@ -22,7 +22,6 @@ void parsefile(vvc &crates, vvi &instructions) {
     auto lines = tl::views::getlines(file) | tl::to<std::vector<std::string>>();
 
     for (size_t i {0}; i < lines.size(); ++i) {
-        // std::cout << i << std::endl;
         if (i < 8) {
             boost::replace_all(lines[i], "[", "");
             boost::replace_all(lines[i], "]", "");
