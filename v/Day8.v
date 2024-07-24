@@ -7,21 +7,21 @@ fn main() {
 }
 
 fn solution(s []string)! {
-	mut count := (s.len * 4) - 4
+	mut count := int((s.len * 4) - 4)
 	mut scores := []int{}
 
 	for rows in 1..s.len - 1 {
 		for cols in 1..s.len - 1 {
-			pos := rune(s[rows][cols]).str().i8()
+			pos := u8(s[rows][cols])
 
-			mut left := []i8{}
-			mut right := []i8{}
-			mut top := []i8{}
-			mut bottom := []i8{}
-			for i in 1..cols + 1 { left << rune(s[rows][cols - i]).str().i8() }
-			for i in 1..s.len - cols { right << rune(s[rows][cols + i]).str().i8() }
-			for i in 1..rows + 1 { top << rune(s[rows - i][cols]).str().i8() }
-			for i in 1..s.len - rows { bottom << rune(s[rows + i][cols]).str().i8() }
+			mut left := []u8{}
+			mut right := []u8{}
+			mut top := []u8{}
+			mut bottom := []u8{}
+			for i in 1..cols + 1 { left << s[rows][cols - i] }
+			for i in 1..s.len - cols { right << s[rows][cols + i] }
+			for i in 1..rows + 1 { top << s[rows - i][cols] }
+			for i in 1..s.len - rows { bottom << s[rows + i][cols] }
 
 			if max(left)! < pos || max(right)! < pos || max(top)! < pos || max(bottom)! < pos {
 				count++
