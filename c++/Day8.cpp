@@ -10,12 +10,12 @@ int main() {
     auto s = tl::views::getlines(file) | tl::to<std::vector<std::string>>();
 
     int count = (s.size() * 4) - 4;
-    vi scores;
+    std::vector<int> scores;
 
     for (size_t rows {1}; rows < s.size() - 1; rows++) {
         for (size_t cols {1}; cols < s[cols].size() - 1; cols++) {
             int pos = (int) s[rows][cols];
-            vi left, right, top, bottom;
+            std::vector<int> left, right, top, bottom;
 
             for (size_t i {1}; i < cols + 1; i++) left.emplace_back((int) s[rows][cols - i]);
             for (size_t i {1}; i < s.size() - cols; i++) right.emplace_back((int) s[rows][cols + i]);
