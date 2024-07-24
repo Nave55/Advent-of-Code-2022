@@ -33,17 +33,18 @@ std::ostream &operator<<(std::ostream &os, const std::vector<T> &arr) {
 }
 
 template <typename T>
-T join(const std::vector<T> &arr, const char &delim = ',') {
-    std::string str {""};
+std::ostream &operator<<(std::ostream &os, const std::tuple<T> &arr) {
+    os << "[";
     for (size_t i {0}; i < arr.size(); ++i) {
+        os << arr[i];
         if (i < arr.size() - 1) {
-            str += arr.at(i);
-            str += delim;
+            os << ",";
         }
-        else str += arr.at(i);
     }
-    return str;
+    os << "]\n";
+    return os;
 }
+
 
 template <typename T>
 float avgVal(const std::vector<T> &arr) {
@@ -66,17 +67,31 @@ T maxVal(const std::vector<T> &arr) {
     return 0;
 }
 
-std::string split(const std::string &s, const char &del = ',') {
+template <typename T>
+T join(const std::vector<T> &arr, const char delim = ',') {
+    std::string str {""};
+    for (size_t i {0}; i < arr.size(); ++i) {
+        if (i < arr.size() - 1) {
+            str += arr.at(i);
+            str += delim;
+        }
+        else str += arr.at(i);
+    }
+    return str;
+}
+
+vi split(const std::string &s, const char del = ',') {
+    vi result {};
     std::stringstream ss(s);
     std::string word;
     while (!ss.eof()) {
         std::getline(ss, word, del);
-        std::cout << word << std::endl;
+        result.emplace_back(std::stoi(word));
     }
-    return word;
+    return result;
 }
 
-vi split(const std::vector<std::string> &arr, const char &del = ',') {
+vi split(const std::vector<std::string> &arr, const char del = ',') {
     vi result {};
 
     for (auto i: arr) {
