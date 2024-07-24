@@ -42,7 +42,7 @@ fn solution(s []string)! {
 				}
 				
 				score *= tracker
-			scores << score
+				scores << score
 			}
 		}
 	}
