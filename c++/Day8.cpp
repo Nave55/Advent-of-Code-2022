@@ -25,7 +25,7 @@ int main() {
             if (maxVal(left) < pos || maxVal(right) < pos || maxVal(top) < pos || maxVal(bottom) < pos) count++;
 
             int score {1};
-            for (const auto &lst: {left, right, top ,bottom}) {
+            for (const auto &lst: {left, right, top, bottom}) {
                 int tracker {0};
                 for (size_t i {0}; i < lst.size(); i++) {
                     if (lst[i] < pos) tracker++;
