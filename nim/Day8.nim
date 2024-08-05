@@ -26,17 +26,10 @@ block:
                 top: seq[char]
                 bottom: seq[char] 
 
-            for i in 1..<cols + 1: 
-                left.add((s[rows][cols - i]))
-
-            for i in 1..<len(s) - cols: 
-                right.add((s[rows][cols + i]))
-
-            for i in 1..<rows + 1: 
-                top.add((s[rows - i][cols]))
-
-            for i in 1..<len(s) - rows: 
-                bottom.add((s[rows + i][cols]))
+            for i in 1..<cols + 1:      left.add((s[rows][cols - i]))
+            for i in 1..<len(s) - cols: right.add((s[rows][cols + i]))
+            for i in 1..<rows + 1:      top.add((s[rows - i][cols]))
+            for i in 1..<len(s) - rows: bottom.add((s[rows + i][cols]))
 
             if max(left) < pos or max(right) < pos or max(top) < pos or max(bottom) < pos:
                 count += 1
