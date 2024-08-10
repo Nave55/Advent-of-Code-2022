@@ -1,3 +1,4 @@
+import haxe.macro.Type.AnonType;
 import haxe.macro.Expr;
 import haxe.Int64;
 import Std.*;
@@ -8,17 +9,20 @@ using hx.strings.Strings;
 
 typedef AS =   Array<String>;
 typedef AI =   Array<Int>;
+typedef AA =   Array<Any>;
 typedef AF =   Array<Float>;
 typedef ANI =  Array<Null<Int>>;
 typedef ANF =  Array<Null<Float>>;
 typedef AAS =  Array<Array<String>>;
 typedef AAI =  Array<Array<Int>>;
 typedef AAF =  Array<Array<Float>>;
+typedef AAA =   Array<Array<Any>>;
 typedef AANI = Array<Array<Null<Int>>>;
 typedef AANF = Array<Array<Null<Float>>>;
 typedef AAAS = Array<Array<Array<String>>>;
 typedef AAAI = Array<Array<Array<Int>>>;
 typedef AAAF = Array<Array<Array<Float>>>;
+typedef AAANI = Array<Array<Array<Null<Int>>>>;
 typedef MII =  Map<Int,    Int>;
 typedef MSI =  Map<String, Int>;
 typedef MIS =  Map<Int,    String>;
@@ -43,20 +47,91 @@ macro function swap(a:Expr, b:Expr) {
 }
 
 /**
+ * [Adds the values of two arrays together to form a new array]
+ 
+    Example:
+
+        var arr1 = [1, 2, 3, 4];
+
+        var arr2 = [1, 2, 3, 4];
+
+        addArrs(arr1, arr2) -> [2, 4, 6, 8]
+        
+@param arr An AI.
+@param arr2 An AI.
+@return An AI
+*/
+
+inline function addArrs(arr: AI, arr2: AI): AI {
+    return [for (i in 0...arr.length) arr[i] + arr2[i]];
+}
+
+/**
+ * [Find value in AAA using an AI]
+ 
+    Example:'
+
+        var arr =  [[1, 2, 3], [4, 5]]
+
+        var arr2 = [0, 0]
+
+        arrValue(arr, arr2) -> [1, 2, 3]
+
+@param arr An AAA
+@param arr2 An AI
+@return An AI
+*/
+
+inline function arrValue(arr: AAA, arr2: AI) {
+    return arr[arr2[0]][arr2[1]];
+}
+
+/**
+ * [Get list of neighbor indices and values in a 2d array.]
+ 
+    Example:'
+
+        var arr =  [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+
+        var loc = [1, 1]
+
+        arrValue(arr, loc) -> {indices: [[0, 1], [2, 1], [1, 2], [1 ,0]], values: [2, 8, 7, 9]}
+
+@param arr An AAA to search in
+@param loc An AI location to start at
+@param diagonal Boolean to indicate if you want diagonal values
+@return A struct of AAI and AA
+*/
+
+function nbrs(arr: AAA, loc: AI, diag: Bool = false) {
+    var dir: AAI = [];
+    if (!diag) dir = [[-1, 0], [0, -1], [0, 1], [1, 0]];
+    else dir = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
+    var indices: AAI = [];
+    var vals: AA = [];
+    for (i in dir) {
+        var tmp = addArrs(loc, i);
+        if (tmp[0] != -1 && tmp[1] != -1 && tmp[0] != arr.length && tmp[1] != arr[0].length) {
+            indices.push(tmp);
+            vals.push(arrValue(arr, tmp));
+        }
+    }
+    return {indices: indices, vals: vals};
+}
+
+/**
  * [Sums an array of Ints]
  
     Example:
         
         intSum([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) -> 55
 
-@param arr An array that you want the sum of.
+@param arr An AI.
 @return An Int value
 */
 
-inline function intSum(arr: Array<Int>): Int {
-    var ttl = 0;
-    for (i in arr) ttl += i;
-    return ttl;
+inline function intSum(arr: AI): Int {
+    return arr.fold((num: Int, ttl: Int) -> num + ttl, 0);
 }
 
 /**
@@ -66,14 +141,12 @@ inline function intSum(arr: Array<Int>): Int {
         
         floatSum([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]) -> 55.0
 
-@param arr An array that you want the sum of.
+@param arr An AF.
 @return A Float value
 */
 
-inline function floatSum(arr: Array<Float>): Float {
-    var ttl:Float = 0;
-    for (i in arr) ttl += i;
-    return ttl;
+inline function floatSum(arr: AF): Float {
+    return arr.fold((num: Float, ttl: Float) -> num + ttl, 0);
 }
 
 /**
@@ -83,14 +156,12 @@ inline function floatSum(arr: Array<Float>): Float {
         
         intProd([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) -> 3,628,800
 
-@param arr An array that you want the product of.
+@param arr An AI.
 @return An Int value
 */
 
-inline function intProd(arr: Array<Int>): Int {
-    var ttl = 1;
-    for (i in arr) ttl *= i;
-    return ttl;
+inline function intProd(arr: AI): Int {
+    return arr.fold((num: Int, ttl: Int) -> num * ttl, 1);
 }
 
 /**
@@ -100,14 +171,12 @@ inline function intProd(arr: Array<Int>): Int {
         
         floatProd([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]) -> 3,628,800
 
-@param arr An array that you want the sum of.
+@param arr An AF.
 @return A Float value
 */
 
-inline function floatProd(arr: Array<Float>): Float {
-    var ttl:Float = 1.0;
-    for (i in arr) ttl *= i;
-    return ttl;
+inline function floatProd(arr: AF): Float {
+    return arr.fold((num: Float, ttl: Float) -> num * ttl, 1);
 }
 
 /**
@@ -117,11 +186,11 @@ inline function floatProd(arr: Array<Float>): Float {
         
         minVal([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]) -> 1.0
 
-@param arr An array that you want to find the min value for.
+@param arr An AA.
 @return A Float value
 */
 
-inline function minVal(arr: Array<Any>): Float {
+inline function minVal(arr: AA): Float {
     var tmp: Float = arr[0];
     for (i in 1...arr.length) tmp = Math.min(tmp, arr[i]);
     return tmp;
@@ -134,11 +203,11 @@ inline function minVal(arr: Array<Any>): Float {
         
         maxVal([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]) -> 10.0
 
-@param arr An array that you want to find the max value for.
+@param arr An AA.
 @return A Float value
 */
 
-inline function maxVal(arr: Array<Any>): Float {
+inline function maxVal(arr: AA): Float {
     var tmp: Float = arr[0];
     for (i in 1...arr.length) tmp = Math.max(tmp, arr[i]);
     return tmp;
@@ -183,8 +252,7 @@ inline function binaryToDecimal(str: String): String {
 inline function decimalToBinary(num: Int, eight = false): String {    
     var strs: String = ""; 
     while (num > 0) {
-        if (num & 1 == 1) strs += "1";
-        else strs += "0";
+        num & 1 == 1 ? strs += "1" : strs += "0";
         num >>= 1;
     }
     if (eight) for (i in 0...8 - strs.length) strs += "0";
@@ -205,13 +273,9 @@ inline function decimalToBinary(num: Int, eight = false): String {
 */
 
 function alphabetSort(str: String, reverse = false): String {
-    var arr: AI = [];
-    var sort_str = "";
-    for (i in 0...str.length) arr.push(str.charCodeAt(i));
-    if (!reverse) arr.sort((a,b) -> a - b);
-    else arr.sort((a,b) -> b - a);
-    for (i in arr) sort_str += i.toChar();
-    return sort_str;
+    var str_arr = str.split(''); 
+    !reverse ? str_arr.sort((a, b) -> a.charCodeAt(0) - b.charCodeAt(0)) : str_arr.sort((a, b) -> b.charCodeAt(0) - a.charCodeAt(0));
+    return str_arr.join('');
 }
 
 /**
