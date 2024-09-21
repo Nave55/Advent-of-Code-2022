@@ -17,7 +17,7 @@ solution :: proc(i_size: int) -> int {
     Letters :: bit_set['A'..='z']
 
     for i in 1..<len(it) { 
-        set1 : Letters
+        set1: Letters
         for j in i..=i+(i_size-1) do set1 += {rune(it[j])}
         if card(set1) == i_size {
             return i + i_size
