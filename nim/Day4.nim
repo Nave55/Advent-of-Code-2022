@@ -20,8 +20,8 @@ var
 for i in arr:
     let s1 = toHashSet(toSeq(i[0]..i[1]))
     let s2 = toHashSet(toSeq(i[2]..i[3]))
-    let s3 = s1 + s2
-    let s4 = s1 * s2
+    let s3 = s1 * s2
+
     if s1 == s3 or s2 == s3:
         inc ttl1
     if s4.len > 0:
