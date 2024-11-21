@@ -22,8 +22,8 @@ fn pt1(input: &str) -> u32 {
 fn pt2(input: &str) -> u32 {
     input
         .split("\r\n\r\n")
-        .map(|elf| {
-            elf.lines()
+        .map(|line| {
+            line.lines()
                 .filter_map(|s| s.parse::<u32>().ok())
                 .sum::<u32>()
         })
