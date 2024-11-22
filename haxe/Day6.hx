@@ -13,10 +13,8 @@ class Day6 {
     static function solution(arr: AS, window = 4) {
         for (i in 0...arr.length - window + 1) {
             var a = new Set<String>(arr.slice(i, i + window));
-            if (a++.length == window) {
-                return i + window;
-            }
+            if (a++.length == window) return i + window;
         }
-        return 0;
+        return -1;
     }
 }
