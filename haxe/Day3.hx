@@ -22,28 +22,21 @@ class Day3 {
         var sum = 0;
         for (i in arr) {
             var n = int(i.length / 2);
-            var a = i.substring(0, n);
-            var b = i.substring(n);
-            for (i in a.split('')) {
-                if (b.contains(i)) {
-                    sum += alph[i];
-                    break;
-                }
-            }
+            var a = new Set<String>(i.substring(0, n).split(''));
+            var b = i.substring(n).split('');
+            sum += alph[(a & b)[0]];
         }
         return sum;
     }
 
     static function solution2(arr: AS) {
-        var sum = 0, cnt = 0;
-        while (cnt < arr.length - 2) {
-            for (j in arr[cnt].split('')) {
-                if (arr[cnt + 1].contains(j) && arr[cnt + 2].contains(j)) {
-                    sum += alph[j];
-                    break;   
-                }
-            }
-            cnt += 3;
+        var sum = 0;
+        for (i in 0...Std.int(arr.length / 3)) {
+            var a = new Set<String>(arr[i * 3].split(''));
+            var b = new Set<String>(arr[i * 3 + 1].split(''));
+            var c = arr[i * 3 + 2].split('');
+            sum += alph[(a & (b & c))[0]];
+
         }
         return sum;
     }
