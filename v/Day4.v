@@ -1,4 +1,5 @@
 import os
+import tools
 
 fn main() {
 	mut arr := [][]int{}
@@ -7,15 +8,18 @@ fn main() {
 		lines[i] = lines[i].replace('-', ',')
 		arr << lines[i].split(',').map(it.int())
 	}
-	mut ttl1, mut ttl2 := 0, 0
+	mut ttl1 := 0
+	mut ttl2 := 0
+
 	for i in arr {
-		if ((i[0] >= i[2] && i[0] <= i[3]) && (i[1] >= i[2] && i[1] <= i[3]))
-			|| ((i[2] >= i[0] && i[2] <= i[1]) && (i[3] >= i[0] && i[3] <= i[1])) {
+		mut set1 := tools.Set{[]int{len: i[1] - i[0] + 1, cap: i[1] - i[0] + 1, init: index + i[0]}}
+		mut set2 := tools.Set{[]int{len: i[3] - i[2] + 1, cap: i[3] - i[2] + 1, init: index + i[2]}}
+
+		s_len := int((set1 * set2).len)
+		if s_len == set1.arr.len || s_len == set2.arr.len {
 			ttl1++
 		}
-
-		if ((i[0] >= i[2] && i[0] <= i[3]) || (i[1] >= i[2] && i[1] <= i[3]))
-			|| ((i[2] >= i[0] && i[2] <= i[1]) || (i[3] >= i[0] && i[3] <= i[1])) {
+		if s_len > 0 {
 			ttl2++
 		}
 	}
