@@ -10,9 +10,9 @@ import "core:strconv"
 import "core:strings"
 
 Directory :: struct {
-		path: string,
-		size: int,
-	}
+	path: string,
+	size: int,
+}
 
 main :: proc() {
 	arena: vm.Arena
@@ -32,7 +32,8 @@ solution :: proc(
 	arena_allocator: mem.Allocator,
 	loc := #caller_location,
 ) -> (
-	ans1, ans2: int, ok: bool
+	ans1, ans2: int,
+	ok: bool,
 ) {
 	data := os.read_entire_file(filepath, arena_allocator) or_return
 	it := string(data)
