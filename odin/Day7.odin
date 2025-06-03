@@ -9,6 +9,11 @@ import "core:slice"
 import "core:strconv"
 import "core:strings"
 
+Directory :: struct {
+		path: string,
+		size: int,
+	}
+
 main :: proc() {
 	arena: vm.Arena
 	err := vm.arena_init_static(&arena, 1 * mem.Megabyte)
@@ -18,7 +23,7 @@ main :: proc() {
 
 	a, b, ok := solution("AoC Files/Day7_2022.txt", arena_allocator)
 	assert(ok, "Bad File Path")
-	
+
 	fmt.printf("Part 1: %v\nPart 2: %v\n", a, b)
 }
 
@@ -31,11 +36,6 @@ solution :: proc(
 ) {
 	data := os.read_entire_file(filepath, arena_allocator) or_return
 	it := string(data)
-
-	Directory :: struct {
-		path: string,
-		size: int,
-	}
 
 	tmp := make([dynamic]string, arena_allocator, loc)
 	uniq_dir_names := make([dynamic]string, arena_allocator, loc)
