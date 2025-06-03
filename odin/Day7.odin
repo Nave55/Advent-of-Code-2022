@@ -47,7 +47,9 @@ solution :: proc(
 			append(&tmp, line[5:])
 			append(&uniq_dir_names, strings.join(tmp[:], "-", arena_allocator, loc))
 		}
+
 		if len(line) >= 6 && line[5] == '.' do pop(&tmp)
+
 		if line[0] >= 48 && line[0] <= 57 {
 			p := strings.join(tmp[:], "-", arena_allocator, loc)
 			s := strconv.atoi(line[:strings.index(line, " ")])
@@ -68,6 +70,7 @@ solution :: proc(
 	ans1 = math.sum(
 		slice.filter(ttl[:], proc(item: int) -> bool {return item <= 100_000}, arena_allocator),
 	)
+
 	ans2 = slice.min(
 		slice.filter(
 			ttl[:],
