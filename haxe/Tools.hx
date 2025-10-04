@@ -1,3 +1,4 @@
+import haxe.macro.Type.AnonType;
 import haxe.macro.Expr;
 import haxe.Int64;
 import hx.strings.Char;
@@ -79,9 +80,9 @@ class StringIterator {
             trace(i);       
         }
 
-@param start Start
-@param end End
-@return Int
+@param a Start
+@param b End
+@return No return value
 */
 
 class ReverseIterator {
@@ -95,7 +96,7 @@ class ReverseIterator {
   
     public inline function hasNext() return i >= end;
     public inline function next() return i--;
-}
+  }
 
 /**
  * [Swaps two variables]
@@ -237,6 +238,12 @@ inline function arrValue<T>(arr: Array<Array<T>>, arr2: AI) {
     return arr[arr2[0]][arr2[1]];
 }
 
+enum Dirs {
+    all;
+    diags;
+    udlr;
+}
+
 /**
  * [Get list of neighbor indices and values in a 2d array.]
  
@@ -254,16 +261,16 @@ inline function arrValue<T>(arr: Array<Array<T>>, arr2: AI) {
 @return A struct of AAI and AA
 */
 
-function nbrs<T>(arr: Array<Array<T>>, loc: Vec2, diag: String = "udlr") {
-    var dir: Array<Vec2> = [];
+function nbrs<T>(arr: Array<Array<T>>, loc: Vec2, dir: Dirs = udlr) {
+    var dirs: Array<Vec2> = [];
     var loc = new Tup(loc);
 
-    if (diag == "udlr") dir = [{x: -1, y: 0}, {x: 0, y: -1}, {x: 0, y: 1}, {x: 1, y: 0}];
-    if (diag == "diag") dir = [{x: -1, y: -1}, {x: 1, y: -1}, {x: -1, y: 1}, {x: 1, y: 1}];
-    if (diag == "both") dir = [{x: -1, y: -1}, {x: -1, y: 0}, {x:-1, y: 1}, {x: 0, y: -1}, {x: 0, y: 1}, {x: 1, y: -1}, {x: 1, y: 0}, {x: 1, y: 1}];
+    if (dir == udlr) dirs = [{x: -1, y: 0}, {x: 0, y: -1}, {x: 0, y: 1}, {x: 1, y: 0}];
+    if (dir == diags) dirs = [{x: -1, y: -1}, {x: 1, y: -1}, {x: -1, y: 1}, {x: 1, y: 1}];
+    if (dir == all)   dirs = [{x: -1, y: -1}, {x: -1, y: 0}, {x:-1, y: 1}, {x: 0, y: -1}, {x: 0, y: 1}, {x: 1, y: -1}, {x: 1, y: 0}, {x: 1, y: 1}];
     var indices: Array<Vec2> = [];
     var vals: Array<T> = [];
-    for (i in dir) {
+    for (i in dirs) {
         var tmp = loc + i;
         if (tmp.x != -1 && tmp.y != -1 && tmp.x != arr.length && tmp.y != arr[0].length) {
             indices.push(tmp);
